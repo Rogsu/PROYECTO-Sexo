@@ -1,16 +1,17 @@
 extends Node2D
 
+onready var camera = $Camera2D
+onready var spawner = $Camera2D/Path2D/PathFollow2D
+onready var player = $Player
+onready var slime = preload("res://Enemies/Enemy.tscn")
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+func _physics_process(delta):
+	camera.global_position = player.global_position
+	spawner.offset = randi()
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_Timer_timeout():
+	var enemy = slime.instance()
+	add_child(enemy)
+	enemy.global_position = spawner.global_position

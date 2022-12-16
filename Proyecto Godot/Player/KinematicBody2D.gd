@@ -23,4 +23,5 @@ func _physics_process(delta):
 				spell.direction = position.direction_to(get_global_mouse_position())
 				spell.position = position
 				get_parent().add_child(spell)
+				
 

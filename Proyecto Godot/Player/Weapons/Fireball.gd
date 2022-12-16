@@ -16,3 +16,7 @@ func _physics_process(delta):
 
 func _on_Fireball_body_entered(body):
 	queue_free()
+
+
+func _on_VisibilityNotifier2D_viewport_exited(viewport):
+	queue_free()
