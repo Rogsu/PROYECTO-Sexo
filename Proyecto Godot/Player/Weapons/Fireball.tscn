@@ -10,6 +10,7 @@ height = 9.49447
 [node name="Fireball" type="Area2D"]
 collision_mask = 6
 script = ExtResource( 2 )
+speed = 1737
 
 [node name="0Cfa6C7A0Cfcd1c" type="Sprite" parent="."]
 scale = Vector2( 0.25, 0.25 )

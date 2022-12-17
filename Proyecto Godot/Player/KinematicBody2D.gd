@@ -6,6 +6,7 @@ const SPEED = 200.0
 var linear_velocity = Vector2()
 var state = FREE
 var fireball = load("res://Player/Weapons/Fireball.tscn")
+var scrap = 0
 
 func _physics_process(delta):
 	match state:
@@ -25,3 +26,11 @@ func _physics_process(delta):
 				get_parent().add_child(spell)
 				
 
+
+
+func _on_CollectArea_area_entered(area):
+	area.attracted = !area.attracted
+
+
+func _on_CollectArea_area_exited(area):
+	area.attracted = !area.attracted

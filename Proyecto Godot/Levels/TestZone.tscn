@@ -81,7 +81,7 @@ autostart = true
 
 [node name="PauseMenu" parent="." instance=ExtResource( 4 )]
 
-[node name="GenericEnemy" parent="." instance=ExtResource( 7 )]
+[node name="TankEnemy" parent="." instance=ExtResource( 7 )]
 position = Vector2( -157, -145 )
 scale = Vector2( 12, 12 )
 
