@@ -1,8 +1,10 @@
 extends Area2D
 
-
-var speed = 150
 var direction = Vector2()
+
+export var speed = 300
+export var damage = 1
+export var knockback = 1000
 
 func _ready():
 	rotate(direction.angle())
@@ -10,13 +12,6 @@ func _ready():
 func _physics_process(delta):
 	global_position += speed * delta * direction
 
-
-
-
-
 func _on_Fireball_body_entered(body):
 	queue_free()
 
-
-func _on_VisibilityNotifier2D_viewport_exited(viewport):
-	queue_free()
