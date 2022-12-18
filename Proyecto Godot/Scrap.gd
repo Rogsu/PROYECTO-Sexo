@@ -8,8 +8,7 @@ var player_pos = Vector2()
 func _physics_process(delta):
 	player_pos = get_parent().get_node("Player").position
 	if(attracted):
-		global_position.x = move_toward(global_position.x,player_pos.x,2)
-		global_position.y = move_toward(global_position.y,player_pos.y,2)
+		global_position = lerp(global_position,player_pos,0.1)
 	
 	match scrap_lvl:
 		1:

@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 enum {FREE, KNOCKBACK, DEATH, DASH}
 
-const SPEED = 200.0
+const SPEED = 300.0
 var linear_velocity = Vector2()
 var state = FREE
 var fireball = load("res://Player/Weapons/Fireball.tscn")
