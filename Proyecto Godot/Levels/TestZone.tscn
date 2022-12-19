@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Levels/TestZone.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/SlimeEnemy.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Sprites/Pasto.png" type="Texture" id=6]
 [ext_resource path="res://Enemies/TankEnemy.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Levels/Anchor.gd" type="Script" id=8]
+[ext_resource path="res://Fonts/COPRGTL.TTF" type="DynamicFontData" id=9]
 
 [sub_resource type="Curve2D" id=4]
 _data = {
@@ -54,6 +55,12 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 1/shapes = [  ]
 1/z_index = 0
 
+[sub_resource type="Theme" id=5]
+
+[sub_resource type="DynamicFont" id=6]
+size = 42
+font_data = ExtResource( 9 )
+
 [node name="TestZone" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -72,12 +79,39 @@ tile_data = PoolIntArray( -2228272, 0, 0, -2228271, 0, 0, -2228270, 0, 0, -22282
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
+[node name="Reloading" type="Label" parent="Player"]
+visible = false
+margin_left = -36.0
+margin_top = -65.0
+margin_right = 38.0
+margin_bottom = -51.0
+text = "Reloading..."
+align = 1
+
+[node name="Balls" type="Label" parent="Player"]
+modulate = Color( 1, 0.6, 0, 1 )
+margin_left = -43.0
+margin_top = 52.0
+margin_right = 44.0
+margin_bottom = 66.0
+theme = SubResource( 5 )
+align = 1
+valign = 2
+
 [node name="Anchor" type="Position2D" parent="."]
 script = ExtResource( 8 )
 
 [node name="Camera2D" type="Camera2D" parent="Anchor"]
 pause_mode = 2
 current = true
+
+[node name="UltCooldown" type="RichTextLabel" parent="Anchor/Camera2D"]
+margin_left = 416.0
+margin_top = 228.0
+margin_right = 513.0
+margin_bottom = 299.0
+custom_colors/default_color = Color( 1, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 6 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 4096.0

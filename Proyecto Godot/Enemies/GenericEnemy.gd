@@ -13,6 +13,7 @@ export var attack_cd: float = 1 # Funciona como velocidad de ataque, mientras ma
 
 var state = PURSUE
 var player_pos = Vector2()
+var is_colliding = false
 
 var scrap = preload("res://Scrap.tscn")
 
@@ -30,7 +31,7 @@ func _physics_process(delta):
 		PURSUE: 
 			# PERSEGUIR AL PLAYER SI ESTÁ ADENTRO DEL AREA, SINO VUELVE A PATROL
 			player_pos = get_parent().get_node("Player").position
-			moveToPoint(player_pos,speed)
+			if(!is_colliding): moveToPoint(player_pos,speed)
 	
 		KNOCKED:
 			# APLICAR KNOCKBACK Y DECREMENTARLO DE FORMA "REALISTA" 
@@ -79,3 +80,11 @@ func randomNearPos():
 	var randX = global_position.x + rand_range(0,60)*sign(randi())
 	var randY = global_position.y + rand_range(0,60)*sign(randi())
 	return Vector2(randX,randY)
+
+
+func _on_Hitbox_body_entered(body):
+	if(body.name == "Player"): is_colliding = true
+
+
+func _on_Hitbox_body_exited(body):
+	if(body.name == "Player"): is_colliding = false

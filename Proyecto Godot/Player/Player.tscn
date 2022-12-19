@@ -1,7 +1,33 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player/KinematicBody2D.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/icon.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/playerBottom.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/playerLeft.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/playerTop.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/playerRight.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "left",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "up",
+"speed": 5.0
+} ]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
@@ -13,7 +39,11 @@ radius = 92.0869
 collision_mask = 6
 script = ExtResource( 1 )
 
-[node name="Icon" type="Sprite" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+animation = "down"
+
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

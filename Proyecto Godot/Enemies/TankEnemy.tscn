@@ -67,7 +67,7 @@ knockback_resistance = 0.25
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 modulate = Color( 0, 0, 1, 1 )
 frames = SubResource( 8 )
-frame = 5
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -100,3 +100,5 @@ value = 5.0
 anims/Flash = SubResource( 9 )
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]

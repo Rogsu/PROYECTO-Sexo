@@ -2,8 +2,6 @@ extends "res://Enemies/GenericEnemy.gd"
 
 enum {ATTACK}
 
-var is_colliding = false
-
 func _physics_process(delta):
 	match state:
 		PURSUE: 
@@ -16,7 +14,7 @@ func _physics_process(delta):
 			if(($WaitTimer.time_left == 0) && (!is_colliding)): moveToPoint(player_pos,7)
 			if((position.distance_to(player_pos) >= 100) && (!is_colliding)): state = PURSUE
 
-func _on_CollisionArea_body_entered(body):
+func _on_Hitbox_body_entered(body):
 	if(state == ATTACK): $WaitTimer.start(attack_cd)
 	if(body.name == "Player"): is_colliding = true
 
