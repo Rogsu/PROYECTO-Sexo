@@ -30,7 +30,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 9.5, 35 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 92.0869
@@ -44,6 +44,7 @@ frames = SubResource( 3 )
 animation = "down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 6 )
 shape = SubResource( 1 )
 
 [node name="CollectArea" type="Area2D" parent="."]

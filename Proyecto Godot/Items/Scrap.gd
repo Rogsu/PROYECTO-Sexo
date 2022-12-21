@@ -5,11 +5,7 @@ var scrap_value = 5
 var attracted = false
 var player_pos = Vector2()
 
-func _physics_process(delta):
-	player_pos = get_parent().get_node("Player").position
-	if(attracted):
-		global_position = lerp(global_position,player_pos,0.1)
-	
+func _ready():
 	match scrap_lvl:
 		1:
 			pass
@@ -19,7 +15,12 @@ func _physics_process(delta):
 		3:
 			scrap_value *= 100
 			set_modulate(Color(0.541176,0.168627,0.886275,1)) # Violeta
-		
+
+func _physics_process(delta):
+	player_pos = get_parent().get_node("Player").position
+	if(attracted):
+		global_position = lerp(global_position,player_pos,0.1)
+
 
 
 

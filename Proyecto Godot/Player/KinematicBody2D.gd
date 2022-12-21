@@ -8,13 +8,25 @@ var linear_velocity = Vector2()
 var state = FREE
 var fireball = load("res://Player/Weapons/Fireball.tscn")
 var scrap = 0
-var ammo = 7
 var can_shoot = true
-var is_ult_on_cooldown = false
-var is_reloading = false
-var ultTimer
+var is_dead = false
+var alpha = 0
+var fadeInTimer
 
-onready var ultCooldown = get_node("/root/TestZone/Anchor/Camera2D/UltCooldown")
+onready var gameOverMsg = get_node("/root/TestZone/Anchor/Camera2D/GameOver")
+onready var death_sound = preload("res://Sounds/OminousChatter.ogg")
+
+
+var weapon = 0 
+#ID DEL ARMA DEL JUGADOR:
+#0: Sin arma
+#1: Fireball (solo debug)
+#2: Antorcha de Acetileno (primer arma melee)
+#3: Nail Gun 
+#4: ...
+var last_weapon_picked_up = 0
+var amount_of_weapons = 0
+var directionAngle = 1
 
 func _physics_process(delta):
 	match state:
@@ -27,6 +39,7 @@ func _physics_process(delta):
 				linear_velocity.y = move_toward(linear_velocity.y, 0, SPEED/8)
 			move_and_slide(linear_velocity);
 			
+			# Animacion
 			if(Input.is_action_just_pressed("ui_down")):
 				$AnimatedSprite.play("down")
 			if(Input.is_action_just_pressed("ui_up")):
@@ -35,41 +48,109 @@ func _physics_process(delta):
 				$AnimatedSprite.play("left")
 			if(Input.is_action_just_pressed("ui_right")):
 				$AnimatedSprite.play("right")
-			
-			showAmmo(ammo)
+
+			#Esto es para que el jugador siempre mire hacia donde apunte el mouse: tiene prioridad por sobre la tecla apretada
+			if(get_global_mouse_position().x < position.x):
+				directionAngle = 3
+				match weapon:
+					2:
+						$AntorchaAcetileno.position.x = -20
+						$AntorchaAcetileno.scale.x = -1
+					3:
+						$NailGun.position.x = -18
+						$NailGun.scale.x = -1
+					4:
+						$Revolver.position.x = -20
+						$Revolver.scale.x = -1
+			elif(get_global_mouse_position().x > position.x):
+				directionAngle = 4
+				match weapon:
+					2:
+						$AntorchaAcetileno.position.x = 20
+						$AntorchaAcetileno.scale.x = 1
+					3:
+						$NailGun.position.x = 18
+						$NailGun.scale.x = 1
+					4:
+						$Revolver.position.x = 20
+						$Revolver.scale.x = 1
+
+			if(amount_of_weapons > 2):
+				dropWeapon()
+			elif(last_weapon_picked_up != weapon):
+				match last_weapon_picked_up:
+					2:
+						$AntorchaAcetileno.visible = false
+						if($AntorchaAcetileno.get_node("TorchSound").is_playing() && $AntorchaAcetileno.isActive):
+							$AntorchaAcetileno.get_node("TorchSound").set_stream(load("res://Sounds/TorchStop.ogg"))
+							$AntorchaAcetileno.get_node("TorchSound").play()
+						$AntorchaAcetileno.isActive = 0
+					3:
+						$NailGun.visible = false
+					4:
+						$Revolver.visible = false
+
+			if(Input.is_action_just_pressed("swapWeapon")):
+				var aux = weapon
+				weapon = last_weapon_picked_up
+				last_weapon_picked_up = aux
+				match weapon:
+					2:
+						$AntorchaAcetileno.visible = true
+					3:
+						$NailGun.visible = true
+					4:
+						$Revolver.visible = true
 			
 			# Disparo
 			if(Input.is_mouse_button_pressed(1)):
-				if(can_shoot && ammo > 0):
-					can_shoot = false
-					generateTimer(0.3,"shootAgain")
-					var spell = fireball.instance()
-					spell.direction = position.direction_to(get_global_mouse_position())
-					spell.position = position
-					get_parent().add_child(spell)
-					ammo-=1
-			
-			# Ulti
-			if(Input.is_mouse_button_pressed(BUTTON_RIGHT)):
-				if(!is_ult_on_cooldown):
-					for i in range(0, 10):
-						var spell = fireball.instance()
-						spell.direction = Vector2(cos(i * ((PI*2) / 10)), sin(i * ((PI*2) / 10)))
-						spell.position = position
-						get_parent().add_child(spell)
-					is_ult_on_cooldown = true;
-					ultTimer = generateTimer(5,"ultAgain")
+				match weapon:
+					1:
+						if(can_shoot):
+							can_shoot = false
+							generateTimer(0.3,"shootAgain")
+							var spell = fireball.instance()
+							spell.direction = position.direction_to(get_global_mouse_position())
+							spell.position = position
+							get_parent().add_child(spell)
+					2:
+						if(!$AntorchaAcetileno.isActive):
+							$AntorchaAcetileno.get_node("TorchSound").set_stream(load("res://Sounds/TorchStart.ogg"))
+							$AntorchaAcetileno.get_node("TorchSound").play()
+						$AntorchaAcetileno.isActive = true
+					3:
+						$NailGun.shoot()
+					4:
+						$Revolver.shoot()
+			if(!Input.is_mouse_button_pressed(1)):
+				match weapon:
+					2:
+						if($AntorchaAcetileno.isActive):
+							$AntorchaAcetileno.get_node("TorchSound").set_stream(load("res://Sounds/TorchStop.ogg"))
+							$AntorchaAcetileno.get_node("TorchSound").play()
+							$AntorchaAcetileno.isActive = 0
+		DEATH:
+			if(!is_dead):
+				$Sprite.texture = load("res://Sprites/TumbaPiedra.png")
+				$Sprite.scale = Vector2(2, 2)
+				$Balls.visible = false
+				match weapon:
+					2:
+						$AntorchaAcetileno.visible = false
+					3:
+						$NailGun.visible = false
+					4:
+						$Revolver.visible = false
+				gameOverMsg.visible = true
+				gameOverMsg.self_modulate = Color(0.73, 0, 0, alpha)
+				playSound(death_sound)
+				generateTimer(0.1, "fadeInGameOverMsg")
+				is_dead = true
 
-			# Recarga
-			if(( ammo == 0 || Input.is_action_just_pressed("reloadKey") ) && !is_reloading):
-				ammo = 0
-				generateTimer(2,"reload")
-				$Reloading.visible = 1
-				is_reloading = true
-
-	# Mostrar cooldown de la ulti
-	if(is_ult_on_cooldown):
-		ultCooldown.set_text(str(int(ultTimer.get_time_left())+1))
+func playSound(sound):
+	sound.instance()
+	add_child(sound)
+	sound.play()
 
 func generateTimer(wait_time,func_name):
 	var timer = Timer.new()
@@ -83,36 +164,24 @@ func generateTimer(wait_time,func_name):
 func shootAgain():
 	can_shoot = true
 
-func reload():
-	ammo = 7
-	$Reloading.visible = 0
-	is_reloading = false
-
-func ultAgain():
-	is_ult_on_cooldown = false
-	ultCooldown.set_text("")
-
-func showAmmo(ammo):
-	match ammo:
-		0:
-			$Balls.set_text("")
-		1:
-			$Balls.set_text("ð")
-		2:
-			$Balls.set_text("ðð")
-		3:
-			$Balls.set_text("ððð")
-		4:
-			$Balls.set_text("ðððð")
-		5:
-			$Balls.set_text("ððððð")
-		6:
-			$Balls.set_text("ðððððð")
-		7:
-			$Balls.set_text("ððððððð")
-
 func _on_CollectArea_area_entered(area):
 	area.attracted = !area.attracted
 
 func _on_CollectArea_area_exited(area):
 	area.attracted = !area.attracted
+
+func fadeInGameOverMsg():
+	alpha += 0.05
+	gameOverMsg.self_modulate = Color(1, 0, 0, alpha)
+	if(alpha >= 1):
+		fadeInTimer.queue_free()
+		
+func dropWeapon():
+	match weapon:
+		2:
+			$AntorchaAcetileno.isPickedUp = false
+		3:
+			$NailGun.isPickedUp = false
+		4:
+			$Revolver.isPickedUp = false
+	amount_of_weapons -= 1

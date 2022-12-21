@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/TorchStop.ogg-46e91dc91e85b6faf0d2c6f2b0e42ca3.oggstr"
+
+[deps]
+
+source_file="res://Sounds/TorchStop.ogg"
+dest_files=[ "res://.import/TorchStop.ogg-46e91dc91e85b6faf0d2c6f2b0e42ca3.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

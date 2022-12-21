@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/RpgCancion.mp3-6f83f85c873295ed98cfaee957ab85ae.mp3str"
+
+[deps]
+
+source_file="res://Sounds/RpgCancion.mp3"
+dest_files=[ "res://.import/RpgCancion.mp3-6f83f85c873295ed98cfaee957ab85ae.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=10.3

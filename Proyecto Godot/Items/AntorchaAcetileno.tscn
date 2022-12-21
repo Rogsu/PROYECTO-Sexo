@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Items/AntorchaAcetileno.gd" type="Script" id=1]
+[ext_resource path="res://Sounds/TorchStart.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Sprites/TorchaAcetileno.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/FireIcon.png" type="Texture" id=4]
+[ext_resource path="res://Fonts/COPRGTL.TTF" type="DynamicFontData" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.5, 5 )
+
+[sub_resource type="DynamicFont" id=2]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 5 )
+
+[node name="AntorchaAcetileno" type="Area2D"]
+script = ExtResource( 1 )
+
+[node name="Torch" type="Sprite" parent="."]
+position = Vector2( -2, 0 )
+texture = ExtResource( 3 )
+flip_h = true
+
+[node name="FireContainer" type="Node2D" parent="Torch"]
+position = Vector2( 2, 0 )
+
+[node name="Fire" type="Sprite" parent="Torch/FireContainer"]
+position = Vector2( 14, -7 )
+rotation = 2.35619
+texture = ExtResource( 4 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2( 14, -8 )
+shape = SubResource( 1 )
+
+[node name="Msg" type="RichTextLabel" parent="."]
+margin_left = -82.0
+margin_top = -43.0
+margin_right = 83.0
+margin_bottom = -26.0
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_fonts/normal_font = SubResource( 2 )
+text = "Press 'E' to pick up"
+scroll_active = false
+
+[node name="TorchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )

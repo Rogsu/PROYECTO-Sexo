@@ -18,7 +18,7 @@ var state = PURSUE
 var player_pos = Vector2()
 var is_colliding = false
 
-var scrap = preload("res://Scrap.tscn")
+var scrap = preload("res://Items/Scrap.tscn")
 
 var knock_dir = Vector2()
 var knock_str = 0
@@ -53,7 +53,7 @@ func moveToPoint(pos: Vector2, speed: int):
 
 func _on_Hitbox_area_entered(area):
 	state = KNOCKED
-	knock_dir = area.position.direction_to(position)
+	knock_dir = area.global_position.direction_to(global_position)
 	$AnimationPlayer.play("Flash")
 	
 	knock_str = area.knockback * knockback_resistance

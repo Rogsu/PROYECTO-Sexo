@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Nailgun.ogg-cff3c37074bdfd42cf680e77b06c7df3.oggstr"
+
+[deps]
+
+source_file="res://Sounds/Nailgun.ogg"
+dest_files=[ "res://.import/Nailgun.ogg-cff3c37074bdfd42cf680e77b06c7df3.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
