@@ -44,6 +44,8 @@ func shoot():
 		var bulletInstance = bullet.instance()
 		bulletInstance.direction = player.position.direction_to(get_global_mouse_position())
 		bulletInstance.position = position
+		bulletInstance.damage = damage
+		bulletInstance.knockback = knockback
 		get_parent().add_child(bulletInstance)
 
 func shootAgain():

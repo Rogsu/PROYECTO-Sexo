@@ -52,13 +52,14 @@ func moveToPoint(pos: Vector2, speed: int):
 	position = position.move_toward(pos,speed)
 
 func _on_Hitbox_area_entered(area):
-	state = KNOCKED
-	knock_dir = area.global_position.direction_to(global_position)
-	$AnimationPlayer.play("Flash")
-	
-	knock_str = area.knockback * knockback_resistance
-	hp -= area.damage
-	$EnemyHealthBar.value -= area.damage
+	if(hp>0):
+		state = KNOCKED
+		knock_dir = area.global_position.direction_to(global_position)
+		$AnimationPlayer.play("Flash")
+		
+		knock_str = area.knockback * knockback_resistance
+		hp -= area.damage
+		$EnemyHealthBar.value -= area.damage
 
 func spawnScrap(cant_scrap):
 	while(cant_scrap >= 1):
@@ -92,3 +93,12 @@ func _on_Hitbox_body_entered(body):
 
 func _on_Hitbox_body_exited(body):
 	if(body.name == "Player"): is_colliding = false
+
+func generateTimer(wait_time,func_name):
+	var timer = Timer.new()
+	timer.one_shot = true
+	add_child(timer)
+	timer.wait_time = wait_time
+	timer.connect("timeout", self, func_name)
+	timer.start()
+	return timer

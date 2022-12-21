@@ -45,6 +45,8 @@ func shoot():
 		var bullet = nail.instance()
 		bullet.direction = player.position.direction_to(get_global_mouse_position())
 		bullet.position = position
+		bullet.damage = damage
+		bullet.knockback = knockback
 		get_parent().add_child(bullet)
 		get_node("NailSound").play()
 
