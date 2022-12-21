@@ -11,6 +11,9 @@ export var cant_scrap = 1
 export var knockback_resistance: float = 1 
 export var attack_cd: float = 1 # Funciona como velocidad de ataque, mientras mas se acerque a 0 el valor, mas rapido ataca
 
+onready var player = get_parent().get_node("Player")
+onready var ui = get_parent().get_node("UI")
+
 var state = PURSUE
 var player_pos = Vector2()
 var is_colliding = false
@@ -22,7 +25,7 @@ var knock_str = 0
 
 func _ready():
 	randomize()
-	player_pos = get_parent().get_node("Player").position
+	player_pos = player.position
 	$EnemyHealthBar.max_value = hp
 	$EnemyHealthBar.value = hp
 
@@ -30,7 +33,7 @@ func _physics_process(delta):
 	match state:
 		PURSUE: 
 			# PERSEGUIR AL PLAYER SI ESTÁ ADENTRO DEL AREA, SINO VUELVE A PATROL
-			player_pos = get_parent().get_node("Player").position
+			player_pos = player.position
 			if(!is_colliding): moveToPoint(player_pos,speed)
 	
 		KNOCKED:
@@ -40,6 +43,7 @@ func _physics_process(delta):
 			if(knock_str < 5):
 				if(hp <= 0): 
 					spawnScrap(cant_scrap)
+					ui.current_value += 1
 					queue_free() 
 				state = PURSUE
 
