@@ -17,6 +17,7 @@ onready var ui = get_parent().get_node("UI")
 var state = PURSUE
 var player_pos = Vector2()
 var is_colliding = false
+var linear_velocity = Vector2()
 
 var scrap = preload("res://Items/Scrap.tscn")
 
@@ -34,11 +35,12 @@ func _physics_process(delta):
 		PURSUE: 
 			# PERSEGUIR AL PLAYER SI ESTÁ ADENTRO DEL AREA, SINO VUELVE A PATROL
 			player_pos = player.position
-			if(!is_colliding): moveToPoint(player_pos,speed)
+			linear_velocity = global_position.direction_to(player_pos) * speed
+			move_and_slide(linear_velocity)
 	
 		KNOCKED:
 			# APLICAR KNOCKBACK Y DECREMENTARLO DE FORMA "REALISTA" 
-			global_position += delta * knock_str * knock_dir
+			linear_velocity = knock_str * knock_dir
 			knock_str = knock_str/1.1 
 			if(knock_str < 5):
 				if(hp <= 0): 
@@ -46,20 +48,11 @@ func _physics_process(delta):
 					ui.current_value += 1
 					queue_free() 
 				state = PURSUE
+			move_and_slide(linear_velocity)
 
 
 func moveToPoint(pos: Vector2, speed: int):
 	position = position.move_toward(pos,speed)
-
-func _on_Hitbox_area_entered(area):
-	if(hp>0):
-		state = KNOCKED
-		knock_dir = area.global_position.direction_to(global_position)
-		$AnimationPlayer.play("Flash")
-		
-		knock_str = area.knockback * knockback_resistance
-		hp -= area.damage
-		$EnemyHealthBar.value -= area.damage
 
 func spawnScrap(cant_scrap):
 	while(cant_scrap >= 1):
@@ -86,14 +79,6 @@ func randomNearPos():
 	var randY = global_position.y + rand_range(0,60)*sign(randi())
 	return Vector2(randX,randY)
 
-
-func _on_Hitbox_body_entered(body):
-	if(body.name == "Player"): is_colliding = true
-
-
-func _on_Hitbox_body_exited(body):
-	if(body.name == "Player"): is_colliding = false
-
 func generateTimer(wait_time,func_name):
 	var timer = Timer.new()
 	timer.one_shot = true
@@ -102,3 +87,13 @@ func generateTimer(wait_time,func_name):
 	timer.connect("timeout", self, func_name)
 	timer.start()
 	return timer
+
+func _on_Hitbox_area_entered(area):
+	if(hp>0):
+		state = KNOCKED
+		knock_dir = area.global_position.direction_to(global_position)
+		$AnimationPlayer.play("Flash")
+		
+		knock_str = area.knockback * knockback_resistance
+		hp -= area.damage
+		$EnemyHealthBar.value -= area.damage

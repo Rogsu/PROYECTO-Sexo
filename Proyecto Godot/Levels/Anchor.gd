@@ -13,4 +13,6 @@ func _ready():
 	$Camera2D.limit_bottom = tilemap_rect.end.y * tilemap_cell_size.y
 
 func _physics_process(delta):
-	global_position = lerp(global_position,player.global_position,0.2)
+	global_position.x = clamp(lerp(global_position.x,player.global_position.x,0.2),-1023,1280)
+	global_position.y = clamp(lerp(global_position.y,player.global_position.y,0.2),-820,660)
+

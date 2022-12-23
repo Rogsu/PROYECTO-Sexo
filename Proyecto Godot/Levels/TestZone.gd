@@ -9,6 +9,10 @@ var wave = 1
 var spawn_info = []
 var total_spawns = 0
 
+var spawn_min_pos_x = -1417
+var spawn_min_pos_y = -1026
+var spawn_max_pos_x = 1678
+var spawn_max_pos_y = 840
 
 func _ready():
 	randomize()
@@ -30,7 +34,10 @@ func _on_Timer_timeout():
 			enemy = spawn_info[random_pos][0].instance()
 			cant = spawn_info[random_pos][1]
 
+
 		spawn_info[random_pos][1] -= spawn_info[random_pos][2] # Restarle a la cant total la cant de spawns
+		while(!(int(spawner.global_position.x) in range(spawn_min_pos_x,spawn_max_pos_x)) || !(int(spawner.global_position.y) in range(spawn_min_pos_y,spawn_max_pos_y))):
+			spawner.offset = randi()
 		enemy.global_position = spawner.global_position
 		add_child(enemy)
 

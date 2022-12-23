@@ -2,6 +2,8 @@ extends "res://Enemies/GenericEnemy.gd"
 
 enum {ATTACK}
 
+var attacked = false
+
 func _physics_process(delta):
 	match state:
 		PURSUE: 
@@ -11,12 +13,13 @@ func _physics_process(delta):
 		ATTACK: 
 			# LO MISMO QUE EL PURSUE PERO CON MAS VELOCIDAD Y CON UNA PEQUEÑA ESPERA AL CHOCAR CON EL PLAYER
 			player_pos = get_parent().get_node("Player").position
-			if(($WaitTimer.time_left == 0) && (!is_colliding)): moveToPoint(player_pos,7)
-			if((position.distance_to(player_pos) >= 100) && (!is_colliding)): state = PURSUE
+			if($WaitTimer.time_left == 0): move_and_slide(global_position.direction_to(player_pos) * speed * 2)
+			if(position.distance_to(player_pos) >= 100): state = PURSUE
+			if(attacked == false): 
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if(collision.collider.name == "Player"): attacked = true
+			if(attacked): 
+				$WaitTimer.start(attack_cd)
+				attacked = false
 
-func _on_Hitbox_body_entered(body):
-	if(state == ATTACK): $WaitTimer.start(attack_cd)
-	if(body.name == "Player"): is_colliding = true
-
-func _on_Hitbox_body_exited(body):
-	if(body.name == "Player"): is_colliding = false

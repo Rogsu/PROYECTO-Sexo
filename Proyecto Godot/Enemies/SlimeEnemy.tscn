@@ -58,16 +58,15 @@ tracks/0/keys = {
 [node name="SlimeEnemy" type="KinematicBody2D"]
 scale = Vector2( 2, 2 )
 collision_layer = 2
-collision_mask = 7
+collision_mask = 23
 script = ExtResource( 1 )
-speed = 4
+speed = 300
 hp = 5
 cant_scrap = 5
 attack_cd = 0.5
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 8 )
-frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -99,5 +98,3 @@ value = 5.0
 anims/Flash = SubResource( 9 )
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
-[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
-[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]

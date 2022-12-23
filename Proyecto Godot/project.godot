@@ -70,11 +70,8 @@ grabWeapon={
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="World "
 2d_physics/layer_4="Items"
+2d_physics/layer_5="Bullets"
 
 [physics]
 
 common/enable_pause_aware_picking=true
-
-[rendering]
-
-environment/default_environment="res://default_env.tres"

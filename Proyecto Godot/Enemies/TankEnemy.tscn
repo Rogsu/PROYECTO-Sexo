@@ -58,8 +58,9 @@ tracks/0/keys = {
 [node name="TankEnemy" type="KinematicBody2D"]
 scale = Vector2( 6, 6 )
 collision_layer = 2
-collision_mask = 7
+collision_mask = 23
 script = ExtResource( 1 )
+speed = 200
 hp = 15
 cant_scrap = 2443
 knockback_resistance = 0.25
@@ -100,5 +101,3 @@ value = 5.0
 anims/Flash = SubResource( 9 )
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
-[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
-[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]
