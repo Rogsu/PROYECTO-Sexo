@@ -13,9 +13,9 @@ var is_dead = false
 var alpha = 0
 var fadeInTimer
 
-onready var gameOverMsg = get_node("/root/TestZone/Anchor/Camera2D/GameOver")
+onready var gameOverMsg = get_node("/root/TestZone/Camera2D/GameOver")
 onready var death_sound = preload("res://Sounds/OminousChatter.ogg")
-
+onready var camera = get_parent().get_node("Camera2D")
 
 var weapon = 0 
 #ID DEL ARMA DEL JUGADOR:
@@ -37,8 +37,8 @@ func _physics_process(delta):
 			else:
 				linear_velocity.x = move_toward(linear_velocity.x, 0, SPEED/8)
 				linear_velocity.y = move_toward(linear_velocity.y, 0, SPEED/8)
-			move_and_slide(linear_velocity);
 			
+			move_and_slide(linear_velocity)
 			# Animacion
 			if(Input.is_action_just_pressed("ui_down")):
 				$AnimatedSprite.play("down")
@@ -119,8 +119,10 @@ func _physics_process(delta):
 							$AntorchaAcetileno.get_node("TorchSound").play()
 						$AntorchaAcetileno.isActive = true
 					3:
+						if(!$NailGun.isShooting): camera.shake_strength = 5
 						$NailGun.shoot()
 					4:
+						if(!$Revolver.isShooting): camera.shake_strength = 10
 						$Revolver.shoot()
 			if(!Input.is_mouse_button_pressed(1)):
 				match weapon:

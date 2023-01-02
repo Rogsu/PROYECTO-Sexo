@@ -18,7 +18,7 @@ func _physics_process(delta):
 			if(attacked == false): 
 				for i in get_slide_count():
 					var collision = get_slide_collision(i)
-					if(collision.collider.name == "Player"): attacked = true
+					if(collision.collider && collision.collider.name == "Player"): attacked = true
 			if(attacked): 
 				$WaitTimer.start(attack_cd)
 				attacked = false

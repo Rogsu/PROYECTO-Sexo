@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Enemies/SlimeEnemy.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/SpriteSheetSlime.png" type="Texture" id=2]
@@ -36,6 +36,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="CircleShape2D" id=10]
+radius = 5.5
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6.5 )
 
@@ -67,11 +70,12 @@ attack_cd = 0.5
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 8 )
+frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -1 )
-shape = SubResource( 1 )
+position = Vector2( 0, 1.5 )
+shape = SubResource( 10 )
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 2
