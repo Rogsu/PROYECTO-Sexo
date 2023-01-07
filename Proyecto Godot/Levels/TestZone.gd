@@ -40,6 +40,7 @@ func _on_Timer_timeout():
 		if rand_num <= running_total:
 			enemy = spawn_info[k][0].instance()
 			selected = true
+			k -= 1
 		k += 1
 	
 	# Verificar que el enemigo se encuentre fuera de la camara
@@ -50,11 +51,11 @@ func _on_Timer_timeout():
 	add_child(enemy)
 
 	# Spawnear varios enemigos 
-	for i in range(0, spawn_info[random_pos][1] - 1): 
+	for i in range(0, spawn_info[k][1] - 1): 
 		var another_enemy = enemy.duplicate()
 		
 		# En posiciones aleatorias
-		if(spawn_info[random_pos][2]):
+		if(spawn_info[k][2]):
 			spawner.offset = randi()
 			another_enemy.global_position = spawner.global_position
 		

@@ -32,7 +32,7 @@ func _physics_process(delta):
 				player.last_weapon_picked_up = player.weapon
 			player.weapon = 4
 
-func shoot():
+func shoot(statsData):
 	if(!isShooting):
 		isShooting = true
 		var timer = Timer.new()
@@ -44,8 +44,8 @@ func shoot():
 		var bulletInstance = bullet.instance()
 		bulletInstance.direction = player.position.direction_to(get_global_mouse_position())
 		bulletInstance.position = position
-		bulletInstance.damage = damage
-		bulletInstance.knockback = knockback
+		bulletInstance.damage = damage + statsData.addDamage
+		bulletInstance.knockback = knockback + statsData.addKnockback
 		get_parent().add_child(bulletInstance)
 
 func shootAgain():

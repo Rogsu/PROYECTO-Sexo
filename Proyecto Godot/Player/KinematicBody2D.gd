@@ -13,6 +13,9 @@ var is_dead = false
 var alpha = 0
 var fadeInTimer
 
+# Aca se almacenan las pasivas del jugador y se agregan al array usando push() 
+onready var passives = [$PassiveData.call("passive1",1),$PassiveData.call("passive2",1),$PassiveData.call("passive3",1)]
+
 onready var gameOverMsg = get_node("/root/TestZone/Camera2D/GameOver")
 onready var death_sound = preload("res://Sounds/OminousChatter.ogg")
 onready var camera = get_parent().get_node("Camera2D")
@@ -27,6 +30,15 @@ var weapon = 0
 var last_weapon_picked_up = 0
 var amount_of_weapons = 0
 var directionAngle = 1
+
+func _ready():
+	# Esto activa todas las pasivas
+	for i in passives: i
+
+var statsData = {
+	"addDamage": 0,
+	"addKnockback": 0
+}
 
 func _physics_process(delta):
 	match state:
@@ -120,10 +132,10 @@ func _physics_process(delta):
 						$AntorchaAcetileno.isActive = true
 					3:
 						if(!$NailGun.isShooting): camera.shake_strength = 5
-						$NailGun.shoot()
+						$NailGun.shoot(statsData)
 					4:
 						if(!$Revolver.isShooting): camera.shake_strength = 10
-						$Revolver.shoot()
+						$Revolver.shoot(statsData)
 			if(!Input.is_mouse_button_pressed(1)):
 				match weapon:
 					2:
