@@ -1,12 +1,7 @@
-extends Node2D
+extends "res://Items/GenericWeapon.gd"
 
-var damage = 5
-var knockback = 2000
 var isPickedUp = false
 var isShooting = false
-var isPurchased = false
-
-onready var player = get_node("/root/TestZone/Player")
 
 var bullet = load("res://Items/Ammo/Bullet.tscn")
 
@@ -38,14 +33,19 @@ func shoot(statsData):
 		var timer = Timer.new()
 		timer.one_shot = true
 		add_child(timer)
-		timer.wait_time = 1
+		timer.wait_time = 1/statsData.addAttackSpeed
 		timer.connect("timeout", self, "shootAgain")
 		timer.start()
 		var bulletInstance = bullet.instance()
 		bulletInstance.direction = player.position.direction_to(get_global_mouse_position())
 		bulletInstance.position = position
-		bulletInstance.damage = damage + statsData.addDamage
-		bulletInstance.knockback = knockback + statsData.addKnockback
+		bulletInstance.damage = damage + (damage * statsData.addDamage)
+		bulletInstance.knockback = knockback + (knockback * statsData.addKnockback)
+		bulletInstance.slow = statsData.addSlow
+		bulletInstance.stun = [stun[0] + statsData.addStun[0], stun[1] + statsData.addStun[1]]
+		bulletInstance.burnChance = burnChance + statsData.addBurnChance
+		bulletInstance.explosion = statsData.explosion
+		bulletInstance.critChance = statsData.critChance
 		get_parent().add_child(bulletInstance)
 
 func shootAgain():

@@ -1,11 +1,7 @@
-extends Area2D
+extends "res://Items/GenericWeapon.gd"
 
-export var damage = 2
-export var knockback = 500
 var isPickedUp = false
 var isShooting = false
-
-onready var player = get_node("/root/TestZone/Player")
 
 var nail = load("res://Items/Ammo/Nail.tscn")
 
@@ -33,20 +29,25 @@ func _physics_process(delta):
 			player.weapon = 3
 			
 
-func shoot():
+func shoot(statsData):
 	if(!isShooting):
 		isShooting = true
 		var timer = Timer.new()
 		timer.one_shot = true
 		add_child(timer)
-		timer.wait_time = 0.1
+		timer.wait_time = 0.1/statsData.addAttackSpeed
 		timer.connect("timeout", self, "shootAgain")
 		timer.start()
 		var bullet = nail.instance()
 		bullet.direction = player.position.direction_to(get_global_mouse_position())
 		bullet.position = position
-		bullet.damage = damage
-		bullet.knockback = knockback
+		bullet.damage = damage + (damage * statsData.addDamage)
+		bullet.knockback = knockback + (knockback * statsData.addKnockback)
+		bullet.slow = statsData.addSlow
+		bullet.stun = [stun[0] + statsData.addStun[0], stun[1] + statsData.addStun[1]]
+		bullet.burnChance = burnChance + statsData.addBurnChance
+		bullet.explosion = statsData.explosion
+		bullet.critChance = statsData.critChance
 		get_parent().add_child(bullet)
 		get_node("NailSound").play()
 

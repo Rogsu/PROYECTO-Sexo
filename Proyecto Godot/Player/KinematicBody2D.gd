@@ -7,14 +7,20 @@ export var SPEED = 400.0
 var linear_velocity = Vector2()
 var state = FREE
 var fireball = load("res://Player/Weapons/Fireball.tscn")
-var scrap = 0
+var essence = 0
 var can_shoot = true
 var is_dead = false
 var alpha = 0
 var fadeInTimer
 
-# Aca se almacenan las pasivas del jugador y se agregan al array usando push() 
-onready var passives = [$PassiveData.call("passive1",1),$PassiveData.call("passive2",1),$PassiveData.call("passive3",1)]
+var hp: float
+var hpRegen = 1 # Porcentaje de vida regenerada por segundo
+
+# Aca se almacenan las pasivas del jugador 
+onready var passives = []
+var p1lvl = 1 # Nivel de pasiva 1
+var p2lvl = 1 # Nivel de pasiva 2
+var p3lvl = 1 # Nivel de pasiva 3
 
 onready var gameOverMsg = get_node("/root/TestZone/Camera2D/GameOver")
 onready var death_sound = preload("res://Sounds/OminousChatter.ogg")
@@ -31,24 +37,38 @@ var last_weapon_picked_up = 0
 var amount_of_weapons = 0
 var directionAngle = 1
 
-func _ready():
-	# Esto activa todas las pasivas
-	for i in passives: i
-
 var statsData = {
-	"addDamage": 0,
-	"addKnockback": 0
+	"addDamage": 0, # Multiplicador de daño general
+	"addKnockback": 0, # Multiplicador de knockback
+	"addSlow": [1,0], # [Potencia de slow (1 a 0), Duracion de slow]
+	"addStun": [0,0], # [Chances de stun (0 a 1), Duracion de stun]
+	"addEssence": 0, # Multiplicador de xp
+	"addMagicDamage": 0, # Multiplicador de daño magico
+	"addSpeed": 0, # Multiplicador de velocidad
+	"addBurnChance": 0, # Del 0 al 1
+	"addAttackSpeed": 1, # 1 es la velocidad base, 2 representa 2 veces mas rapido
+	"damageReduction": 0, # Porcentaje del daño reducido (0 a 1)
+	"thorns": 0, # Porcentaje del daño devuelto, del 0 al 1
+	"addHpRegen": 0, # Porcentaje de vida regenerada por segundo (1 a 100)
+	"explosion": [0,0], # [Chance de explotar (0 a 1), Porcentaje de daño de arma (0 a 1)]
+	"critChance": 0, # (0 a 1)
+	"addHurtDamage": 0, # Daño inflingido a si mismo adicional por porcentaje 
+	"revives": 0 
 }
+
+func _ready():
+	passives.append_array([[call("passive1",p1lvl)],[1,call("passive2",p2lvl)],[1,call("passive3",p3lvl)]])
+	for i in passives: i
 
 func _physics_process(delta):
 	match state:
 		FREE:
 			var direction = Vector2(Input.get_axis("ui_left", "ui_right"),Input.get_axis("ui_up", "ui_down"))
 			if direction:
-				linear_velocity = direction.normalized() * SPEED
+				linear_velocity = direction.normalized() * (SPEED + SPEED * statsData.addSpeed)
 			else:
-				linear_velocity.x = move_toward(linear_velocity.x, 0, SPEED/8)
-				linear_velocity.y = move_toward(linear_velocity.y, 0, SPEED/8)
+				linear_velocity.x = move_toward(linear_velocity.x, 0, (SPEED + SPEED * statsData.addSpeed)/8)
+				linear_velocity.y = move_toward(linear_velocity.y, 0, (SPEED + SPEED * statsData.addSpeed)/8)
 			
 			move_and_slide(linear_velocity)
 			# Animacion
@@ -122,7 +142,7 @@ func _physics_process(delta):
 							can_shoot = false
 							generateTimer(0.3,"shootAgain")
 							var spell = fireball.instance()
-							spell.direction = position.direction_to(get_global_mouse_position())
+							direction = position.direction_to(get_global_mouse_position())
 							spell.position = position
 							get_parent().add_child(spell)
 					2:
@@ -144,22 +164,11 @@ func _physics_process(delta):
 							$AntorchaAcetileno.get_node("TorchSound").play()
 							$AntorchaAcetileno.isActive = 0
 		DEATH:
-			if(!is_dead):
-				$Sprite.texture = load("res://Sprites/TumbaPiedra.png")
-				$Sprite.scale = Vector2(2, 2)
-				$Balls.visible = false
-				match weapon:
-					2:
-						$AntorchaAcetileno.visible = false
-					3:
-						$NailGun.visible = false
-					4:
-						$Revolver.visible = false
-				gameOverMsg.visible = true
-				gameOverMsg.self_modulate = Color(0.73, 0, 0, alpha)
-				playSound(death_sound)
-				generateTimer(0.1, "fadeInGameOverMsg")
-				is_dead = true
+			if(statsData.revives > 0):
+				statsData.revives -= 1
+				state = FREE
+			else:
+				get_tree().quit()
 
 func playSound(sound):
 	sound.instance()
@@ -184,6 +193,12 @@ func _on_CollectArea_area_entered(area):
 func _on_CollectArea_area_exited(area):
 	area.attracted = !area.attracted
 
+func _on_Hitbox_body_entered(area):
+	print("a")
+	if(statsData.thorns > 0):
+		area.hp -= area.damage * statsData.thorns
+	hp -= area.damage
+
 func fadeInGameOverMsg():
 	alpha += 0.05
 	gameOverMsg.self_modulate = Color(1, 0, 0, alpha)
@@ -199,3 +214,6 @@ func dropWeapon():
 		4:
 			$Revolver.isPickedUp = false
 	amount_of_weapons -= 1
+
+func addEssence(newEssence):
+	essence += newEssence + (newEssence * statsData.addEssence)

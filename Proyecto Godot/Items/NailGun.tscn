@@ -12,6 +12,8 @@ font_data = ExtResource( 4 )
 
 [node name="NailGun" type="Area2D"]
 script = ExtResource( 2 )
+damage = 1
+knockback = 400
 
 [node name="NailSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )

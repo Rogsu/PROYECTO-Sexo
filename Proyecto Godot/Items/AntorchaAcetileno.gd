@@ -2,12 +2,18 @@ extends Area2D
 
 var damage = 0
 var knockback = 1000
+var slow = [1,0] # [Potencia de slow (1 a 0), Duracion de slow]
+var stun = 0 # Duracion de stun
 var isActive = 0
 var isPickedUp = false
 
-onready var player = get_node("/root/TestZone/Player")
+var player: KinematicBody2D
 
 onready var sound = get_node("TorchSound")
+
+func _ready():
+	yield(get_parent(),"ready")
+	player = get_node("/root/TestZone/Player")
 
 func _physics_process(delta):
 	if(isPickedUp):

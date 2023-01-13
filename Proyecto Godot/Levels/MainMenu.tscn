@@ -1,0 +1,154 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/COPRGTL.TTF" type="DynamicFontData" id=1]
+[ext_resource path="res://Levels/MainMenu.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 1 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1026.0
+margin_bottom = 597.0
+color = Color( 0.160784, 0.160784, 0.160784, 0.556863 )
+
+[node name="MenuContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MenuContainer"]
+margin_left = 392.0
+margin_top = 264.0
+margin_right = 632.0
+margin_bottom = 336.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuContainer/PanelContainer"]
+margin_right = 240.0
+margin_bottom = 72.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuContainer/PanelContainer/MarginContainer"]
+margin_right = 240.0
+margin_bottom = 72.0
+
+[node name="PlayButton" type="Button" parent="MenuContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 2 )
+text = "              Play              "
+
+[node name="QuitButton" type="Button" parent="MenuContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 240.0
+margin_bottom = 72.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Quit"
+
+[node name="CharacterContainer" type="CenterContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CharacterContainer"]
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 512.0
+margin_bottom = 300.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CharacterContainer/PanelContainer"]
+margin_right = 235.0
+margin_bottom = 300.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterContainer/PanelContainer/MarginContainer"]
+margin_right = 235.0
+margin_bottom = 300.0
+
+[node name="TikiButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 235.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 2 )
+text = "Tiki"
+
+[node name="WindButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 235.0
+margin_bottom = 72.0
+custom_fonts/font = SubResource( 2 )
+text = "Wind Master"
+
+[node name="FireButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 235.0
+margin_bottom = 110.0
+custom_fonts/font = SubResource( 2 )
+text = "Fire Master"
+
+[node name="WaterButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 114.0
+margin_right = 235.0
+margin_bottom = 148.0
+custom_fonts/font = SubResource( 2 )
+text = "Water Master"
+
+[node name="IceButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 152.0
+margin_right = 235.0
+margin_bottom = 186.0
+custom_fonts/font = SubResource( 2 )
+text = "Ice Master"
+
+[node name="EarthButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 190.0
+margin_right = 235.0
+margin_bottom = 224.0
+custom_fonts/font = SubResource( 2 )
+text = "Earth Master"
+
+[node name="ElectricButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 228.0
+margin_right = 235.0
+margin_bottom = 262.0
+custom_fonts/font = SubResource( 2 )
+text = "Electric Master"
+
+[node name="ReturnButton" type="Button" parent="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 266.0
+margin_right = 235.0
+margin_bottom = 300.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Return"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 286.5
+margin_top = 57.0
+margin_right = 737.5
+margin_bottom = 102.0
+custom_fonts/font = SubResource( 3 )
+text = "Proyecto steampunk"
+align = 1
+
+[connection signal="button_up" from="MenuContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_PlayButton_button_up"]
+[connection signal="button_up" from="MenuContainer/PanelContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/TikiButton" to="." method="_on_TikiButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/WindButton" to="." method="_on_WindButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/FireButton" to="." method="_on_FireButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/WaterButton" to="." method="_on_WaterButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/IceButton" to="." method="_on_IceButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/EarthButton" to="." method="_on_EarthButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/ElectricButton" to="." method="_on_ElectricButton_button_up"]
+[connection signal="button_up" from="CharacterContainer/PanelContainer/MarginContainer/VBoxContainer/ReturnButton" to="." method="_on_ReturnButton_button_up"]

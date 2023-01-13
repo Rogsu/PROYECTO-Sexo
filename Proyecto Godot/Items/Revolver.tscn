@@ -11,6 +11,8 @@ font_data = ExtResource( 3 )
 
 [node name="Revolver" type="Area2D"]
 script = ExtResource( 1 )
+damage = 5
+knockback = 800
 
 [node name="RevolverBigga" type="Sprite" parent="."]
 texture = ExtResource( 2 )

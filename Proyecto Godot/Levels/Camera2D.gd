@@ -4,12 +4,15 @@ export var NOISE_SHAKE_SPEED: float = 30.0
 export var SHAKE_DECAY_RATE: float = 3.0
 
 onready var noise = OpenSimplexNoise.new()
-onready var player = get_parent().get_node("Player")
 
 var noise_i: float = 0.0
 var shake_strength: float = 0.0
 
+var player: KinematicBody2D
+
 func _ready():
+	yield(get_parent(),"ready")
+	player = get_node("/root/TestZone/Player")
 	randomize()
 	noise.seed = randi()
 	noise.period = 2

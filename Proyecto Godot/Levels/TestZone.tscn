@@ -1,14 +1,12 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Levels/TestZone.gd" type="Script" id=1]
 [ext_resource path="res://Items/NailGun.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/PauseMenu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Sprites/icon.png" type="Texture" id=5]
 [ext_resource path="res://Sprites/Pasto.png" type="Texture" id=6]
 [ext_resource path="res://Items/Revolver.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Levels/Camera2D.gd" type="Script" id=8]
-[ext_resource path="res://Items/AntorchaAcetileno.tscn" type="PackedScene" id=9]
 [ext_resource path="res://UI/UI.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Levels/Spawner.gd" type="Script" id=11]
 
@@ -82,15 +80,11 @@ script = ExtResource( 11 )
 position = Vector2( -1487, -1076 )
 rotation = 1.57978
 
-[node name="AntorchaAcetileno" parent="." instance=ExtResource( 9 )]
-
 [node name="Revolver" parent="." instance=ExtResource( 7 )]
 position = Vector2( -29, 151 )
 
 [node name="NailGun" parent="." instance=ExtResource( 2 )]
 position = Vector2( -253, 69 )
-
-[node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 pause_mode = 2
@@ -109,6 +103,9 @@ fit_content_height = true
 autostart = true
 
 [node name="PauseMenu" parent="." instance=ExtResource( 4 )]
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( -121, -4 )
 
 [connection signal="next_wave" from="UI" to="." method="_on_UI_next_wave"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -1,11 +1,11 @@
 extends Node2D
 
 onready var spawner = $Spawner/PathFollow2D
-onready var player = $Player
 onready var slime = preload("res://Enemies/SlimeEnemy.tscn")
 onready var tank = preload("res://Enemies/TankEnemy.tscn")
+onready var global = get_node("/root/Global")
 
-
+var player: KinematicBody2D
 var wave = 1
 var spawn_info = []
 var total_spawns = 0
@@ -17,6 +17,10 @@ var spawn_max_pos_x = 1678
 var spawn_max_pos_y = 840
 
 func _ready():
+	player = global.playerCharacter.instance()
+	add_child(player)
+	player.global_position = Vector2(0,0)
+
 	setSpawns()
 	randomize()
 
@@ -50,19 +54,21 @@ func _on_Timer_timeout():
 	enemy.global_position = spawner.global_position
 	add_child(enemy)
 
-	# Spawnear varios enemigos 
-	for i in range(0, spawn_info[k][1] - 1): 
+	# Spawnear varios enemigos
+	for i in range(0, spawn_info[k][1]):
 		var another_enemy = enemy.duplicate()
-		
+
 		# En posiciones aleatorias
 		if(spawn_info[k][2]):
 			spawner.offset = randi()
+			while(!(int(spawner.global_position.x) in range(spawn_min_pos_x,spawn_max_pos_x)) || !(int(spawner.global_position.y) in range(spawn_min_pos_y,spawn_max_pos_y))):
+				spawner.offset = randi()
 			another_enemy.global_position = spawner.global_position
-		
+
 		# En el mismo lugar
 		else:
 			another_enemy.global_position = randomNearPos(enemy.global_position)
-		
+
 		add_child(another_enemy)
 
 func setSpawns():
@@ -75,7 +81,7 @@ func setSpawns():
 			
 		10:
 			spawn_info = [[slime, 1, 1, 0.5],[tank, 1, 1, 0.5]]
-			$Timer.wait_time = 0.75
+			$Timer.wait_time = 1
 			
 		20:
 			spawn_info = [[slime, 3, 1, 1]]
